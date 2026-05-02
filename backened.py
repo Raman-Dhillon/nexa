@@ -9,6 +9,20 @@ from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 # ---------------- SETUP ----------------
 smooth = SmoothingFunction().method1
 device = "cuda" if torch.cuda.is_available() else "cpu"
+from huggingface_hub import snapshot_download
+import os
+
+if not os.path.exists("m2m_lora"):
+    snapshot_download(
+        repo_id="Raman-Dhillon/m2m-lora",
+        local_dir="m2m_lora"
+    )
+
+if not os.path.exists("nllb_lora"):
+    snapshot_download(
+        repo_id="Raman-Dhillon/nllb-lora",
+        local_dir="nllb_lora"
+    )
 
 # ---------------- LOAD MODELS ----------------
 

@@ -1,6 +1,7 @@
 torch
 transformers
 sentencepiece
+huggingface_hub
 accelerate
 peft
 sentence-transformers
