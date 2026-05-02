@@ -1,9 +1,10 @@
 torch
 transformers
+sentencepiece
+accelerate
 peft
 sentence-transformers
 bert-score
 nltk
 streamlit
 pandas
-matplotlib
