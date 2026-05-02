@@ -76,7 +76,6 @@ def translate_nllb(text, tokenizer, model):
     return tokenizer.decode(tokens[0], skip_special_tokens=True)
 def evaluate(src, pa, embed_model, bert_scorer):
 
-    # 🔥 ALWAYS use NLLB for back translation
     nllb_tokenizer, nllb_model = load_nllb()
 
     nllb_tokenizer.src_lang = "pan_Guru"
@@ -113,10 +112,10 @@ def adaptive_translation(text):
 
     embed_model, bert_scorer = load_eval_models()
 
-    # Step 1: Try M2M
+    # Step 1: M2M
     m2m_tokenizer, m2m_model = load_m2m()
-
     m2m_out = translate_m2m(text, m2m_tokenizer, m2m_model)
+
     bleu, bert, cosine, back = evaluate(
         text, m2m_out,
         embed_model, bert_scorer
@@ -124,20 +123,20 @@ def adaptive_translation(text):
 
     final = 0.6 * bert + 0.4 * cosine
 
-    # Step 2: Switch to NLLB if needed
+    # Step 2: Only if needed → use NLLB
     if final < 0.82 or cosine < 0.45:
 
         nllb_tokenizer, nllb_model = load_nllb()
-
         nllb_out = translate_nllb(text, nllb_tokenizer, nllb_model)
+
         bleu, bert, cosine, back = evaluate(
             text, nllb_out,
-            embed_model, bert_scorer,
-            nllb_tokenizer, nllb_model
+            embed_model, bert_scorer
         )
 
         final = 0.6 * bert + 0.4 * cosine
 
         return nllb_out, "NLLB", bleu, bert, cosine, final, back
 
+    # ✅ If M2M is good
     return m2m_out, "M2M", bleu, bert, cosine, final, back
