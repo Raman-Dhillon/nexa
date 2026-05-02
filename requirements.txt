@@ -9,3 +9,4 @@ bert-score
 nltk
 streamlit
 pandas
+torchvision
