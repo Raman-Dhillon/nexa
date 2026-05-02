@@ -74,20 +74,22 @@ def translate_nllb(text, tokenizer, model):
         )
 
     return tokenizer.decode(tokens[0], skip_special_tokens=True)
-def evaluate(src, pa, embed_model, bert_scorer, tokenizer, model):
+def evaluate(src, pa, embed_model, bert_scorer):
 
-    # Back translation
-    tokenizer.src_lang = "pan_Guru"
-    inputs = tokenizer(pa, return_tensors="pt").to(device)
+    # 🔥 ALWAYS use NLLB for back translation
+    nllb_tokenizer, nllb_model = load_nllb()
+
+    nllb_tokenizer.src_lang = "pan_Guru"
+    inputs = nllb_tokenizer(pa, return_tensors="pt").to(device)
 
     with torch.no_grad():
-        tokens = model.generate(
+        tokens = nllb_model.generate(
             **inputs,
-            forced_bos_token_id=tokenizer.convert_tokens_to_ids("eng_Latn"),
+            forced_bos_token_id=nllb_tokenizer.convert_tokens_to_ids("eng_Latn"),
             num_beams=3
         )
 
-    back = tokenizer.decode(tokens[0], skip_special_tokens=True)
+    back = nllb_tokenizer.decode(tokens[0], skip_special_tokens=True)
 
     # BLEU
     bleu = sentence_bleu(
@@ -97,11 +99,11 @@ def evaluate(src, pa, embed_model, bert_scorer, tokenizer, model):
         smoothing_function=smooth
     )
 
-    # BERTScore (cached)
+    # BERTScore
     P, R, F1 = bert_scorer.score([back], [src])
     bert = F1.mean().item()
 
-    # Cosine similarity
+    # Cosine
     emb1 = embed_model.encode(src, convert_to_tensor=True)
     emb2 = embed_model.encode(pa, convert_to_tensor=True)
     cosine = util.cos_sim(emb1, emb2).item()
@@ -117,8 +119,7 @@ def adaptive_translation(text):
     m2m_out = translate_m2m(text, m2m_tokenizer, m2m_model)
     bleu, bert, cosine, back = evaluate(
         text, m2m_out,
-        embed_model, bert_scorer,
-        m2m_tokenizer, m2m_model
+        embed_model, bert_scorer
     )
 
     final = 0.6 * bert + 0.4 * cosine
