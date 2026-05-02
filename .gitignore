@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# System files
+.DS_Store
+
+# Models (IMPORTANT)
+m2m_lora/
+nllb_lora/
+*.bin
+*.safetensors
+
+# Logs
+*.log
+
+# Notebook checkpoints
+.ipynb_checkpoints/

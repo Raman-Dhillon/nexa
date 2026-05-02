@@ -1,0 +1,9 @@
+torch
+transformers
+peft
+sentence-transformers
+bert-score
+nltk
+streamlit
+pandas
+matplotlib
