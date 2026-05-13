@@ -1,8 +1,7 @@
-# 🌐 NEXA Adaptive Translation System
-
+# NEXA-English-Punjabi-Machine-Translation
 NEXA is an intelligent machine translation framework that dynamically selects the most suitable model between M2M100 and NLLB based on semantic evaluation metrics. The system improves translation quality by leveraging adaptive decision-making, back-translation, and embedding-based similarity.
 
-## 🚀 Key Features
+# 🚀 Key Features
 
 - 🔄 Adaptive model switching (M2M100 ↔ NLLB)
 - 🧠 Semantic evaluation using BERTScore and cosine similarity
@@ -11,12 +10,31 @@ NEXA is an intelligent machine translation framework that dynamically selects th
 - ⚡ Streamlit-based interactive UI
 - 📈 Visualization of performance metrics
 
-## 🧠 Models Used
+---
+
+# 🧠 Models Used
 
 - M2M100 (LoRA fine-tuned)
 - NLLB-200 (LoRA fine-tuned)
 
-## ⚙️ How It Works
+---
+# 📂 Datasets Used
+
+## 1️⃣ OPUS-100 Dataset
+Parallel corpus dataset used for multilingual machine translation training.
+
+🔗 https://opus.nlpl.eu/opus-100.php
+
+---
+
+## 2️⃣ Samanantar Dataset
+Large-scale Indian language parallel corpus dataset developed by AI4Bharat for machine translation tasks.
+
+🔗 https://github.com/AI4Bharat/indicnlp.ai4bharat.org/blob/master/content/pages/samanantar.md
+
+---
+
+# ⚙️ How It Works
 
 1. Input sentence is translated using M2M100
 2. Translation is evaluated using:
@@ -26,14 +44,52 @@ NEXA is an intelligent machine translation framework that dynamically selects th
 4. Back-translation is used for validation
 5. Best output is selected
 
-## 📊 Evaluation Metrics
+---
+
+# 📊 Evaluation Metrics
 
 - BLEU Score
 - BERTScore
 - Cosine Similarity
 
-## 💻 Run Locally
+---
+
+# 💻 Run Locally
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
+
+```
+# 📊 Results & Visualizations
+
+## 🔹 Model Comparison
+
+<p align="center">
+  <img src="model_comparison.png" width="700">
+</p>
+
+---
+
+## 🔹 Model Performance
+
+<p align="center">
+  <img src="model_performance.png" width="700">
+</p>
+
+---
+
+## 🔹 Score Distribution
+
+<p align="center">
+  <img src="score_distribution.png" width="700">
+</p>
+
+# 📷 Application Demo
+
+## 🔹 Translation Interface
+
+<p align="center">
+  <img src="demo1.jpeg" width="800">
+  <img src="demo2.jpeg" width="800">
+</p>
